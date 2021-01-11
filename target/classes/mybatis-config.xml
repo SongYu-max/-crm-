@@ -8,7 +8,7 @@
   
   <typeAliases>
   
-<!--  	<package name="com.xxx.domain"/>-->
+  	<package name="com.bjpowernode.crm.settings.domain"/>
   	
   
   </typeAliases>
@@ -28,7 +28,7 @@
  
   <mappers>
    
-<!--      <package name="com.xxx.dao"/>-->
+      <package name="com.bjpowernode.crm.settings.dao"/>
     
   </mappers>
 </configuration>

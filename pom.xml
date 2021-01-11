@@ -16,6 +16,7 @@
 
   <dependencies>
 
+
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -86,4 +87,9 @@
       </resource>
     </resources>
   </build>
+  <properties>
+    <java.version>15</java.version>
+    <maven.compiler.source>${java.version}</maven.compiler.source>
+    <maven.compiler.target>${java.version}</maven.compiler.target>
+  </properties>
 </project>
