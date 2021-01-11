@@ -22,7 +22,12 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 		})
 		})
 		function login(){
-			alert("进行登录程序");
+			var loginAct = $("#loginAct").val();
+			var loginPwd = $("#loginPwd").val();
+			if (loginAct==""||loginPwd==""){
+				$("#msg").html("账号或密码不能为空");
+			}
+
 		}
 
 	</script>
@@ -50,7 +55,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 					</div>
 					<div class="checkbox"  style="position: relative;top: 30px; left: 10px;">
 						
-							<span id="msg"></span>
+							<span id="msg" style="color:red;"></span>
 						
 					</div>
 					<button type="button" id="submitBtn" class="btn btn-primary btn-lg btn-block"  style="width: 350px; position: relative;top: 45px;">登录</button>
