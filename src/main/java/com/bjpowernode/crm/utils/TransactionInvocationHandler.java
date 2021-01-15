@@ -33,7 +33,7 @@ public class TransactionInvocationHandler implements InvocationHandler{
 			e.printStackTrace();
 			
 			//处理的是什么异常，继续往上抛什么异常
-//			throw e.getCause();
+			throw e.getCause();
 		}finally{
 			SqlSessionUtil.myClose(session);
 		}
