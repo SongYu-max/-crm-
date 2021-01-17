@@ -5,6 +5,18 @@
     <welcome-file>index.html</welcome-file>
   </welcome-file-list>
   
+<!--  过滤器-->
+  <filter>
+    <filter-name>LoginFilter</filter-name>
+    <filter-class>com.bjpowernode.crm.web.filter.LoginFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>LoginFilter</filter-name>
+    <url-pattern>*.do</url-pattern>
+    <url-pattern>*.jsp  </url-pattern>
+  </filter-mapping>
+
+<!--  用户控制器-->
   <servlet>
     <servlet-name>UserController</servlet-name>
     <servlet-class>com.bjpowernode.crm.settings.web.controller.UserController</servlet-class>
@@ -12,7 +24,16 @@
   <servlet-mapping>
     <servlet-name>UserController</servlet-name>
     <url-pattern>/settings/user/login.do</url-pattern>
+  </servlet-mapping>
 
+  <!--  市场活动控制器-->
+  <servlet>
+    <servlet-name>ActivityController</servlet-name>
+    <servlet-class>com.bjpowernode.crm.workbench.web.controller.ActivityController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ActivityController</servlet-name>
+    <url-pattern>/workbench/activity/xxx.do</url-pattern>
   </servlet-mapping>
   
   

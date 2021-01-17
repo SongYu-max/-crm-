@@ -15,6 +15,13 @@
 	<script>
 		//启动执行函数
 		$(function (){
+
+			if (window.top!=window){
+				window.top.location=window.location;
+			}
+
+			//页面加载完毕后，将用户文本框中的内容清空
+			$("#loginAct").val("");
 			//页面加载完毕后，让用户的文本框自动获得焦点
 			$("#loginAct").focus();
 			//为登录按钮绑定事件，执行登录操作-点击按钮
