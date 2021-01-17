@@ -6,6 +6,16 @@
   </welcome-file-list>
   
 <!--  过滤器-->
+<!--  字符编码过滤器-->
+  <filter>
+    <filter-name>EncodingFilter</filter-name>
+    <filter-class>com.bjpowernode.crm.web.filter.EncodingFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>EncodingFilter</filter-name>
+    <url-pattern>*.do</url-pattern>
+  </filter-mapping>
+  <!--  登录过滤器-->
   <filter>
     <filter-name>LoginFilter</filter-name>
     <filter-class>com.bjpowernode.crm.web.filter.LoginFilter</filter-class>
@@ -33,7 +43,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>ActivityController</servlet-name>
-    <url-pattern>/workbench/activity/xxx.do</url-pattern>
+    <url-pattern>/workbench/activity/getUserList.do</url-pattern>
   </servlet-mapping>
   
   

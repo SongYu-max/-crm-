@@ -29,8 +29,42 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					需要操作模态窗口的jquery对象，调用modal方法，该方法传递参数， show:打开模态窗口， hide：隐藏模态窗口
 
 			 */
-			alert("123")
-			$("#createActivityModal").modal("show");
+			// alert("123")
+			// $("#createActivityModal").modal("show");
+
+			//走后台，目的是获取用户信息列表，为所有者下拉框铺值
+			$.ajax({
+				url:"workbench/activity/getUserList.do",
+				type:"get",
+				dataType:"json",
+				success:function (data){
+					/*
+
+						List<User> uList
+
+						data
+							[{},{},{}...]
+
+					 */
+					var html = "<option></option>";
+					$.each(data,function (i,n){
+						html+="<option value='"+n.id+"'>"+n.name+"</option>";
+					})
+
+					$("#create-owner").html(html);
+
+					//将当前登录的用户，设置为下拉框的默认选项
+					var id = "${user.id}";
+					$("#create-owner").val(id);
+
+					//当所有者下拉框处理完毕后，展现模态窗口
+					$("#createActivityModal").modal("show");
+
+
+				}
+			})
+
+
 		})
 		
 		
@@ -57,10 +91,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<div class="form-group">
 							<label for="create-marketActivityOwner" class="col-sm-2 control-label">所有者<span style="font-size: 15px; color: red;">*</span></label>
 							<div class="col-sm-10" style="width: 300px;">
-								<select class="form-control" id="create-marketActivityOwner">
-								  <option>zhangsan</option>
-								  <option>lisi</option>
-								  <option>wangwu</option>
+								<select class="form-control" id="create-owner">
+
 								</select>
 							</div>
                             <label for="create-marketActivityName" class="col-sm-2 control-label">名称<span style="font-size: 15px; color: red;">*</span></label>
@@ -220,7 +252,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div class="btn-toolbar" role="toolbar" style="background-color: #F7F7F7; height: 50px; position: relative;top: 5px;">
 				<div class="btn-group" style="position: relative; top: 18%;">
 				  <button type="button" class="btn btn-primary" id="addBtn"><span class="glyphicon glyphicon-plus"></span> 创建</button>
-				  <button type="button" class="btn btn-default" ><span class="glyphicon glyphicon-pencil"></span> 修改</button>
+				  <button type="button" class="btn btn-default" id=""><span class="glyphicon glyphicon-pencil"></span> 修改</button>
 				  <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-minus"></span> 删除</button>
 				</div>
 				
