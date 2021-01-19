@@ -38,7 +38,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		});
 		
 		
-		window.open("workbench/main/index.jsp","workareaFrame");
+		window.open("workbench/main/index.html","workareaFrame");
 		
 	});
 	
