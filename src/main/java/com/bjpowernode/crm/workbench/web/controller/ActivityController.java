@@ -35,12 +35,65 @@ public class ActivityController extends HttpServlet {
             pageList(request,response);
         }else if ("/workbench/activity/delete.do".equals(path)){
             delete(request,response);
+        }else if ("/workbench/activity/getUserListAndActivity.do".equals(path)){
+            getUserListAndActivity(request,response);
         }
+//        else if ("/workbench/activity/update.do".equals(path)){
+//            update(request,response);
+//        }
 
     }
 
+//    private void update(HttpServletRequest request, HttpServletResponse response) {
+//        System.out.println("执行市场活动的修改操作");
+//        String id = request.getParameter("id");
+//        String owner = request.getParameter("owner");
+//        String name = request.getParameter("name");
+//        String startDate = request.getParameter("startDate");
+//        String endDate = request.getParameter("endDate");
+//        String cost = request.getParameter("cost");
+//        String description = request.getParameter("description");
+//        //修改时间：当前系统时间
+//        String editTime = DateTimeUtil.getSysTime();
+//        //修改人：当前登录用户
+//        String editBy = ((User)request.getSession().getAttribute("user")).getName();
+//
+//        ActivityService as = (ActivityService) ServiceFactory.getService(new ActivityServiceImpl());
+//        Activity a = new Activity();
+//        a.setId(id);
+//        a.setOwner(owner);
+//        a.setName(name);
+//        a.setStartDate(startDate);
+//        a.setEndDate(endDate);
+//        a.setCost(cost);
+//        a.setDescription(description);
+//        a.setEditTime(editTime);
+//        a.setEditBy(editBy);
+//        boolean flag = as.update(a);
+//        PrintJson.printJsonFlag(response,flag);
+//    }
+
+    private void getUserListAndActivity(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("进入到查询用户信息列表和根据市场活动id查单条记录的操作");
+        String id = request.getParameter("id");
+        ActivityService as = (ActivityService) ServiceFactory.getService(new ActivityServiceImpl());
+        /*
+            总结：
+                controller调用service的方法，前端需要什么，service层返回值就返回什么
+                （service只能返回多条单一的，不能一下返回所有想要的，于是乎在这个controller层需要将他们装到map里再一起返回到前端）
+
+                前端
+                aList
+                a
+
+                map
+         */
+        Map<String,Object> map =  as.getUserListAndActivity(id);
+        PrintJson.printJsonObj(response,map);
+    }
+
     private void delete(HttpServletRequest request, HttpServletResponse response) {
-        System.out.println("进入到删除市场活动信息列表的操作");
+        System.out.println("进入到删除市场活动信息的操作");
         String ids[] = request.getParameterValues("id");
         ActivityService as = (ActivityService) ServiceFactory.getService(new ActivityServiceImpl());
         boolean flag = as.delete(ids);
