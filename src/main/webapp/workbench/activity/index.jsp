@@ -156,9 +156,46 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		$("#activityBody").on("click",$("input[name=xz]"),function (){
 			$("#qx").prop("checked",$("input[name=xz]").length==$("input[name=xz]:checked").length);
 		})
+		//为删除按钮绑定事件，执行市场活动删除操作
+		$("#deleteBtn").click(function (){
+			//找到复选框中所有挑√的复选框的jquery对象
+			var $xz = $("input[name=xz]:checked");
+			if ($xz.length==0){
+				alert("请选择要删除的记录")
+			}else{
+				if(confirm("确定要删除所选的记录吗？")){
+					//拼接参数
+					var param = "";
+
+					//将$xz中的每一个dom对象遍历出来，取其value值相当于取得了需要删除记录的id
+					for (var i=0;i<$xz.length;i++){
+						param += "id="+ $($xz[i]).val();
+						if (i<$xz.length-1){
+							param += "&";
+						}
+					}
+					$.ajax({
+						url:"workbench/activity/delete.do",
+						data:param,
+						type:"post",
+						dataType:"json",
+						success:function (data){
+							if (data.success){
+								pageList(1,2);
+							}else {
+								alert("删除市场活动失败")
+							}
+						}
+					})
+				}
+
+			}
+		})
 		
 	});
 	function pageList(pageNo,pageSize){
+		//将全选复选框的√干掉
+		$("#qx").prop("checked",false);
 		//查询前，将隐藏域中保存的信息取出来，重新赋予到搜索框中
 		$("#search-name").val($.trim($("#hidden-name").val()));
 		$("#search-owner").val($.trim($("#hidden-owner").val()));

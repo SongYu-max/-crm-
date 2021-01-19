@@ -78,6 +78,13 @@
           order by a.createTime desc
           limit #{skipCount},#{pageSize}
      </select>
+     <delete id="delete">
+          delete from tbl_activity
+          where id in
+          <foreach collection="array" item="id" open="(" close=")" separator=",">
+               #{id}
+          </foreach>
+     </delete>
 </mapper>
 
 
