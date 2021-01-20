@@ -88,18 +88,18 @@
      <select id="getById" resultType="Activity">
           select * from tbl_activity where id = #{id}
      </select>
-<!--     <update id="update">-->
-<!--          update tbl_activity set-->
-<!--            owner=#{owner},-->
-<!--            name=#{name},-->
-<!--            startDate=#{startDate},-->
-<!--            endDate=#{}endDate,-->
-<!--            cost=#{cost},-->
-<!--            description=#{description},-->
-<!--            editTime=#{editTime},-->
-<!--            editBy=#{editBy}-->
-<!--            where id = #{id}-->
-<!--     </update>-->
+     <update id="update">
+          update tbl_activity set
+            owner=#{owner},
+            name=#{name},
+            startDate=#{startDate},
+            endDate=#{endDate},
+            cost=#{cost},
+            description=#{description},
+            editTime=#{editTime},
+            editBy=#{editBy}
+            where id = #{id}
+     </update>
 </mapper>
 
 

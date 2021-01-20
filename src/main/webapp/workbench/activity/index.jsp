@@ -92,7 +92,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					"startDate":$.trim($("#create-startDate").val()),
 					"endDate":$.trim($("#create-endDate").val()),
 					"cost":$.trim($("#create-cost").val()),
-					"description":$.trim($("#create-description").val()),
+					"description":$.trim($("#create-description").val())
 				},
 				type: "post",
 				dataType: "json",
@@ -106,7 +106,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					if (data.success){
 						//添加成功后
 						//刷新市场活动信息列表（局部刷新）
-						pageList(1,2);
+						// pageList(1,2);
+						pageList(1,$("#activityPage").bs_pagination('getOption', 'rowsPerPage'));
 						//清空模态窗口中的数据
 						/*
 							注意：
@@ -124,7 +125,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						$("#activityAddForm")[0].reset();
 						//关闭添加操作的模态窗口
 						$("#createActivityModal").modal("hide");
-
+						pageList(1,$("#activityPage").bs_pagination('getOption', 'rowsPerPage'));
 
 					}else{
 						alert("添加市场活动失败");
@@ -147,7 +148,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			$("#hidden-startDate").val($.trim($("#search-startDate").val()));
 			$("#hidden-endDate").val($.trim($("#search-endDate").val()));
 
-            pageList(1,2);
+			pageList(1,$("#activityPage").bs_pagination('getOption', 'rowsPerPage'));
         })
 
 		$("#qx").on("click",function (){
@@ -240,43 +241,44 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			}
 		})
 
-		// //给更新按钮添加点击事件
-		// $("#updateBtn").click(function (){
-		// 	$.ajax({
-		// 		url: "workbench/activity/update.do",
-		// 		data:{
-		// 			"id":$.trim($("#edit-id").val()),
-		// 			"owner":$.trim($("#edit-owner").val()),
-		// 			"name":$.trim($("#edit-name").val()),
-		// 			"startDate":$.trim($("#edit-startDate").val()),
-		// 			"endDate":$.trim($("#edit-endDate").val()),
-		// 			"cost":$.trim($("#edit-cost").val()),
-		// 			"description":$.trim($("#edit-description").val()),
-		// 		},
-		// 		type: "post",
-		// 		dataType: "json",
-		// 		success:function (data){
-		// 			/*
-		//
-		// 				data
-		// 					{"success":true/false}
-		//
-		// 			 */
-		// 			if (data.success){
-		// 				//修改成功后
-		// 				//刷新市场活动信息列表（局部刷新）
-		// 				pageList(1,2);
-		//
-		// 				//关闭修改操作的模态窗口
-		// 				$("#editActivityModal").modal("hide");
-		//
-		//
-		// 			}else{
-		// 				alert("修改市场活动失败");
-		// 			}
-		// 		}
-		// 	})
-		// })
+		//给更新按钮添加点击事件
+		$("#updateBtn").click(function (){
+			$.ajax({
+				url: "workbench/activity/update.do",
+				data:{
+					"id":$.trim($("#edit-id").val()),
+					"owner":$.trim($("#edit-owner").val()),
+					"name":$.trim($("#edit-name").val()),
+					"startDate":$.trim($("#edit-startDate").val()),
+					"endDate":$.trim($("#edit-endDate").val()),
+					"cost":$.trim($("#edit-cost").val()),
+					"description":$.trim($("#edit-description").val())
+				},
+				type: "post",
+				dataType: "json",
+				success:function (data){
+					/*
+
+						data
+							{"success":true/false}
+
+					 */
+					if (data.success){
+						//修改成功后
+						//刷新市场活动信息列表（局部刷新）
+						pageList(1,2);
+
+						//关闭修改操作的模态窗口
+						$("#editActivityModal").modal("hide");
+						pageList($("#activityPage").bs_pagination('getOption', 'currentPage')
+								,$("#activityPage").bs_pagination('getOption', 'rowsPerPage'));
+
+					}else{
+						alert("修改市场活动失败");
+					}
+				}
+			})
+		})
 		
 	});
 
@@ -318,7 +320,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 $.each(data.dataList,function (i,n){
                     html += '<tr class="active">';
                     html += '<td><input type="checkbox" name="xz" value="'+n.id+'"/></td>';
-                    html += '<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href=\'workbench/activity/detail.jsp\';">'+n.name+'</a></td>';
+                    html += '<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href=\'workbench/activity/detail.do?id='+n.id+'\';">'+n.name+'</a></td>';
                     html += '<td>'+n.owner+'</td>';
                     html += '<td>'+n.startDate+'</td>';
                     html += '<td>'+n.endDate+'</td>';
@@ -536,13 +538,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				  <div class="form-group">
 				    <div class="input-group">
 				      <div class="input-group-addon">开始日期</div>
-					  <input class="form-control" type="text" id="search-startDate" />
+					  <input class="form-control time" type="text" id="search-startDate" />
 				    </div>
 				  </div>
 				  <div class="form-group">
 				    <div class="input-group">
 				      <div class="input-group-addon">结束日期</div>
-					  <input class="form-control" type="text" id="search-endDate">
+					  <input class="form-control time" type="text" id="search-endDate" />
 				    </div>
 				  </div>
 				  

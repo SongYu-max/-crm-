@@ -16,5 +16,6 @@ public interface ActivityDao {
 
     Activity getById(String id);
 
-//    int update(Activity a);
+    int update(Activity a);
+
 }
