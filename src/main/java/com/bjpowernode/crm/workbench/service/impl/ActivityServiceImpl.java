@@ -104,4 +104,14 @@ public class ActivityServiceImpl implements ActivityService {
         List<Activity> arList = activityRemarkDao.getRemarkListByAid(activityId);
         return arList;
     }
+
+    @Override
+    public boolean deleteRemark(String id) {
+        boolean flag = true;
+        int count = activityRemarkDao.deleteRemark(id);
+        if (count!=1){
+            flag=false;
+        }
+        return flag;
+    }
 }

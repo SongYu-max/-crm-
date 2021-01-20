@@ -53,6 +53,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			$(this).children("span").css("color","#E6E6E6");
 		});
 		showRemarkList();
+        $("#remarkBody").on("mouseover",".remarkDiv",function(){
+            $(this).children("div").children("div").show();
+        })
+        $("#remarkBody").on("mouseout",".remarkDiv",function(){
+            $(this).children("div").children("div").hide();
+        })
 	});
 	function showRemarkList(){
 		$.ajax({
@@ -69,15 +75,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                  */
 				var html = "";
 				$.each(data,function (i,n){
-					html += '<div class="remarkDiv" style="height: 60px;">';
+					html += '<div id="'+n.id+'" class="remarkDiv" style="height: 60px;">';
 					html += '<img title="zhangsan" src="image/user-thumbnail.png" style="width: 30px; height:30px;">';
 					html += '<div style="position: relative; top: -40px; left: 40px;" >';
 					html += '<h5>'+n.noteContent+'</h5>';
 					html += '<font color="gray">市场活动</font> <font color="gray">-</font> <b>${a.name}</b> <small style="color: gray;"> '+(n.editFlag==0?n.createTime:n.editTime)+' 由'+(n.editFlag==0?n.createBy:n.editBy)+'</small>';
 					html += '<div style="position: relative; left: 500px; top: -30px; height: 30px; width: 100px; display: none;">';
-					html += '<a class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-edit" style="font-size: 20px; color: #E6E6E6;"></span></a>';
+					html += '<a class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-edit" style="font-size: 20px; color: #FF0000;"></span></a>';
 					html += '&nbsp;&nbsp;&nbsp;&nbsp;';
-					html += '<a class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-remove" style="font-size: 20px; color: #E6E6E6;"></span></a>';
+					html += '<a class="myHref" href="javascript:void(0);" onclick="deleteRemark(\''+n.id+'\')"><span class="glyphicon glyphicon-remove" style="font-size: 20px; color: #FF0000;"></span></a>';
 					html += '</div>';
 					html += '</div>';
 					html += '</div>';
@@ -86,6 +92,28 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			}
 		})
 	}
+	function deleteRemark(id){
+	    $.ajax({
+            url:"workbench/activity/deleteRemark.do",
+            data: {
+                "id":id
+            },
+            type: "post",
+            dataType: "json",
+            success:function (data){
+                /*
+                    data
+                        "success:true/false"
+                 */
+                if (data.success){
+                    $("#"+id).remove()
+                    // showRemarkList();
+                }else {
+                    alert("删除备注失败")
+                }
+            }
+        })
+    }
 	
 </script>
 
@@ -249,7 +277,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</div>
 	
 	<!-- 备注 -->
-	<div style="position: relative; top: 30px; left: 40px;">
+	<div id="remarkBody" style="position: relative; top: 30px; left: 40px;">
 		<div class="page-header">
 			<h4>备注</h4>
 		</div>

@@ -20,4 +20,6 @@ public interface ActivityService {
     Activity detail(String id);
 
     List<Activity> getRemarkListByAid(String activityId);
+
+    boolean deleteRemark(String id);
 }

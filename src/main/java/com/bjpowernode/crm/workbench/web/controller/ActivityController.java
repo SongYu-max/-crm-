@@ -7,6 +7,7 @@ import com.bjpowernode.crm.settings.service.impl.UserServiceImpl;
 import com.bjpowernode.crm.utils.*;
 import com.bjpowernode.crm.vo.PaginationVO;
 import com.bjpowernode.crm.workbench.domain.Activity;
+import com.bjpowernode.crm.workbench.domain.ActivityRemark;
 import com.bjpowernode.crm.workbench.service.ActivityService;
 import com.bjpowernode.crm.workbench.service.impl.ActivityServiceImpl;
 
@@ -43,9 +44,20 @@ public class ActivityController extends HttpServlet {
             detail(request,response);
         }else if ("/workbench/activity/getRemarkListByAid.do".equals(path)){
             getRemarkListByAid(request,response);
+        }else if ("/workbench/activity/deleteRemark.do".equals(path)){
+            deleteRemark(request,response);
         }
 
     }
+
+    private void deleteRemark(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("进入到删除备注操作");
+        String id = request.getParameter("id");
+        ActivityService as = (ActivityService) ServiceFactory.getService(new ActivityServiceImpl());
+        boolean flag = as.deleteRemark(id);
+        PrintJson.printJsonFlag(response,flag);
+    }
+
     private void getRemarkListByAid(HttpServletRequest request, HttpServletResponse response) {
         System.out.println("进入到根据市场id，取得备注信息列表");
         String activityId = request.getParameter("activityId");
