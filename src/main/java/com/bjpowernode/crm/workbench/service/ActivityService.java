@@ -17,4 +17,5 @@ public interface ActivityService {
 
     boolean update(Activity a);
 
+    Activity detail(String id);
 }

@@ -39,8 +39,19 @@ public class ActivityController extends HttpServlet {
             getUserListAndActivity(request,response);
         }else if ("/workbench/activity/update.do".equals(path)){
             update(request,response);
+        }else if ("/workbench/activity/detail.do".equals(path)){
+            detail(request,response);
         }
 
+    }
+
+    private void detail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("进入到跳转详细信息页的操作");
+        String id = request.getParameter("id");
+        ActivityService as = (ActivityService) ServiceFactory.getService(new ActivityServiceImpl());
+        Activity a = as.detail(id);
+        request.setAttribute("a",a);
+        request.getRequestDispatcher("/workbench/activity/detail.jsp").forward(request,response);
     }
 
     private void update(HttpServletRequest request, HttpServletResponse response) {
