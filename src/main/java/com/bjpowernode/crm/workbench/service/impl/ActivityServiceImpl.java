@@ -99,5 +99,9 @@ public class ActivityServiceImpl implements ActivityService {
         return a;
     }
 
-
+    @Override
+    public List<Activity> getRemarkListByAid(String activityId) {
+        List<Activity> arList = activityRemarkDao.getRemarkListByAid(activityId);
+        return arList;
+    }
 }

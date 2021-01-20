@@ -41,8 +41,17 @@ public class ActivityController extends HttpServlet {
             update(request,response);
         }else if ("/workbench/activity/detail.do".equals(path)){
             detail(request,response);
+        }else if ("/workbench/activity/getRemarkListByAid.do".equals(path)){
+            getRemarkListByAid(request,response);
         }
 
+    }
+    private void getRemarkListByAid(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("进入到根据市场id，取得备注信息列表");
+        String activityId = request.getParameter("activityId");
+        ActivityService as = (ActivityService) ServiceFactory.getService(new ActivityServiceImpl());
+        List<Activity> arList = as.getRemarkListByAid(activityId);
+        PrintJson.printJsonObj(response,arList);
     }
 
     private void detail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
