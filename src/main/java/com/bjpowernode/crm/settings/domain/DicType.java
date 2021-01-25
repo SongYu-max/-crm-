@@ -1,6 +1,7 @@
 package com.bjpowernode.crm.settings.domain;
 
 public class DicType {
+
     private String code;
     private String name;
     private String description;

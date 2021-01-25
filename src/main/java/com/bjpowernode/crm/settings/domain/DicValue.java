@@ -1,6 +1,7 @@
 package com.bjpowernode.crm.settings.domain;
 
 public class DicValue {
+
     private String id;
     private String value;
     private String text;
