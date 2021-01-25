@@ -19,6 +19,7 @@ public class ActivityServiceImpl implements ActivityService {
     private ActivityRemarkDao activityRemarkDao = SqlSessionUtil.getSqlSession().getMapper(ActivityRemarkDao.class);
     private UserDao userDao = SqlSessionUtil.getSqlSession().getMapper(UserDao.class);
 
+
     @Override
     public boolean save(Activity a) {
         boolean flag = true;
@@ -141,6 +142,8 @@ public class ActivityServiceImpl implements ActivityService {
         List<Activity> aList =  activityDao.getActivityListByClueId(clueId);
         return aList;
     }
+
+
 
 
 }

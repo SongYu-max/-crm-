@@ -42,8 +42,18 @@ public class ClueController extends HttpServlet {
             detail(request,response);
         }else if ("/workbench/clue/getActivityListByClueId.do".equals(path)){
             getActivityListByClueId(request,response);
+        }else if ("/workbench/clue/unbund.do".equals(path)){
+            unbund(request,response);
         }
 
+    }
+
+    private void unbund(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("进入到线索模块-解除关联操作");
+        String id = request.getParameter("id");
+        ClueService as = (ClueService) ServiceFactory.getService(new ClueServiceImpl());
+        boolean flag = as.unbund(id);
+        PrintJson.printJsonFlag(response,flag);
     }
 
     private void getActivityListByClueId(HttpServletRequest request, HttpServletResponse response) {

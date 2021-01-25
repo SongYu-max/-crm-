@@ -72,6 +72,7 @@
     <url-pattern>/workbench/clue/save.do</url-pattern>
     <url-pattern>/workbench/clue/detail.do</url-pattern>
     <url-pattern>/workbench/clue/getActivityListByClueId.do</url-pattern>
+    <url-pattern>/workbench/clue/unbund.do</url-pattern>
 
   </servlet-mapping>
 

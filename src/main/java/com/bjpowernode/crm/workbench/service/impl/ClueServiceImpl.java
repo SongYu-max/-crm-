@@ -24,4 +24,14 @@ public class ClueServiceImpl implements ClueService {
         Clue c = clueDao.detail(id);
         return c;
     }
+
+    @Override
+    public boolean unbund(String id) {
+        boolean flag = true;
+        int count = clueDao.unbund(id);
+        if (count!=1){
+            flag=false;
+        }
+        return flag;
+    }
 }

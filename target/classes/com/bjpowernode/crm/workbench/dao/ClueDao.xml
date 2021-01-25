@@ -46,7 +46,7 @@
         #{address}
     )
 </insert>
-  	<select id="detail" resultType="Clue">
+<select id="detail" resultType="Clue">
         select
             c.id,
             c.fullname,
@@ -73,6 +73,9 @@
         on c.owner = u.id
         where c.id = #{id}
     </select>
+<delete id="unbund">
+    delete from tbl_clue_activity_relation where id = #{id}
+</delete>
 </mapper>
 
 

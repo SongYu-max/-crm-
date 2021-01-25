@@ -88,7 +88,23 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		id:我们想要一个关联关系表的id
 	 */
 	function unbund(id){
-		alert(id)
+		$.ajax({
+			url:"workbench/clue/unbund.do",
+			data:{
+				"id":id
+			},
+			type: "post",
+			dataType: "json",
+			success:function (data){
+				if (data.success){
+					//解除关联成功
+					//刷新关联的市场活动列表
+					showActivityList();
+				}else{
+					alert("解除关联失败")
+				}
+			}
+		})
 	}
 
 </script>
