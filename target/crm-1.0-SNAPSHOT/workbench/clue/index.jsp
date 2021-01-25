@@ -21,6 +21,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script type="text/javascript">
 
 	$(function(){
+
+		$(".time").datetimepicker({
+			minView: "month",
+			language:  'zh-CN',
+			format: 'yyyy-mm-dd',
+			autoclose: true,
+			todayBtn: true,
+			pickerPosition: "top-left"
+		});
+
+
 		$("#addBtn").click(function(){
 			$.ajax({
 				url:"workbench/clue/getUserList.do",
@@ -39,7 +50,43 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				}
 			})
 		})
-		
+		//为保存按钮添加事件，执行线索添加操作
+		$("#saveBtn").click(function (){
+			$.ajax({
+				url:"workbench/clue/save.do",
+				data:{
+					"fullname":$.trim($("#create-fullname").val()),
+					"appellation":$.trim($("#create-appellation").val()),
+					"owner":$.trim($("#create-owner").val()),
+					"company":$.trim($("#create-company").val()),
+					"job":$.trim($("#create-job").val()),
+					"email":$.trim($("#create-email").val()),
+					"phone":$.trim($("#create-phone").val()),
+					"website":$.trim($("#create-website").val()),
+					"mphone":$.trim($("#create-mphone").val()),
+					"state":$.trim($("#create-state").val()),
+					"source":$.trim($("#create-source").val()),
+					"description":$.trim($("#create-description").val()),
+					"contactSummary":$.trim($("#create-contactSummary").val()),
+					"nextContactTime":$.trim($("#create-nextContactTime").val()),
+					"address":$.trim($("#create-address").val())
+				},
+				type: "post",
+				dataType: "json",
+				success:function (data){
+					/*
+						data:
+						{"success":true/false}
+
+					 */
+					if (data.success){
+						$("#createClueModal").modal("hide");
+					}else{
+						alert("线索添加失败")
+					}
+				}
+			})
+		})
 		
 	});
 	
@@ -76,7 +123,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<div class="form-group">
 							<label for="create-call" class="col-sm-2 control-label">称呼</label>
 							<div class="col-sm-10" style="width: 300px;">
-								<select class="form-control" id="create-call">
+								<select class="form-control" id="create-appellation">
 								  <option></option>
 									<c:forEach items="${appellationList}" var="a">
 										<option value="${a.value}">${a.text}</option>
@@ -85,7 +132,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<label for="create-surname" class="col-sm-2 control-label">姓名<span style="font-size: 15px; color: red;">*</span></label>
 							<div class="col-sm-10" style="width: 300px;">
-								<input type="text" class="form-control" id="create-surname">
+								<input type="text" class="form-control" id="create-fullname">
 							</div>
 						</div>
 						
@@ -118,7 +165,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<label for="create-status" class="col-sm-2 control-label">线索状态</label>
 							<div class="col-sm-10" style="width: 300px;">
-								<select class="form-control" id="create-status">
+								<select class="form-control" id="create-state">
 								  <option></option>
 									<c:forEach items="${clueStateList}" var="c">
 										<option value="${c.value}">${c.text}</option>
@@ -143,7 +190,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<div class="form-group">
 							<label for="create-describe" class="col-sm-2 control-label">线索描述</label>
 							<div class="col-sm-10" style="width: 81%;">
-								<textarea class="form-control" rows="3" id="create-describe"></textarea>
+								<textarea class="form-control" rows="3" id="create-description"></textarea>
 							</div>
 						</div>
 						
@@ -159,7 +206,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<div class="form-group">
 								<label for="create-nextContactTime" class="col-sm-2 control-label">下次联系时间</label>
 								<div class="col-sm-10" style="width: 300px;">
-									<input type="text" class="form-control" id="create-nextContactTime">
+									<input type="text" class="form-control time" id="create-nextContactTime" readonly>
 								</div>
 							</div>
 						</div>
@@ -179,7 +226,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-					<button type="button" class="btn btn-primary" data-dismiss="modal">保存</button>
+					<button type="button" class="btn btn-primary" id="saveBtn">保存</button>
 				</div>
 			</div>
 		</div>
