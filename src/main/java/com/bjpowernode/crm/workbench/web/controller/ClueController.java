@@ -40,7 +40,19 @@ public class ClueController extends HttpServlet {
             save(request,response);
         }else if ("/workbench/clue/detail.do".equals(path)){
             detail(request,response);
+        }else if ("/workbench/clue/getActivityListByClueId.do".equals(path)){
+            getActivityListByClueId(request,response);
         }
+
+    }
+
+    private void getActivityListByClueId(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("进入到线索模块-展现关联的市场活动列表");
+        String clueId = request.getParameter("clueId");
+        ActivityService as = (ActivityService) ServiceFactory.getService(new ActivityServiceImpl());
+        List<Activity> aList = as.getActivityListByClueId(clueId);
+        PrintJson.printJsonObj(response,aList);
+
 
     }
 
