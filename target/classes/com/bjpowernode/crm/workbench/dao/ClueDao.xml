@@ -46,7 +46,33 @@
         #{address}
     )
 </insert>
-  	
+  	<select id="detail" resultType="Clue">
+        select
+            c.id,
+            c.fullname,
+            c.appellation,
+            u.name as owner,
+            c.company,
+            c.job,
+            c.email,
+            c.phone,
+            c.website,
+            c.mphone,
+            c.state,
+            c.source,
+            c.createBy,
+            c.createTime,
+            c.editBy,
+            c.editTime,
+            c.description,
+            c.contactSummary,
+            c.nextContactTime,
+            c.address
+        from tbl_clue c
+        join tbl_user u
+        on c.owner = u.id
+        where c.id = #{id}
+    </select>
 </mapper>
 
 

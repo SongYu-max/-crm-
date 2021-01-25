@@ -18,4 +18,10 @@ public class ClueServiceImpl implements ClueService {
         }
         return flag;
     }
+
+    @Override
+    public Clue detail(String id) {
+        Clue c = clueDao.detail(id);
+        return c;
+    }
 }
