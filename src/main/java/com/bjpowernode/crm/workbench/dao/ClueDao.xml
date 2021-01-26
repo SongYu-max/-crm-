@@ -73,9 +73,7 @@
         on c.owner = u.id
         where c.id = #{id}
     </select>
-<delete id="unbund">
-    delete from tbl_clue_activity_relation where id = #{id}
-</delete>
+
 </mapper>
 
 

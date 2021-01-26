@@ -44,15 +44,42 @@ public class ClueController extends HttpServlet {
             getActivityListByClueId(request,response);
         }else if ("/workbench/clue/unbund.do".equals(path)){
             unbund(request,response);
+        }else if ("/workbench/clue/getActivityListByNameAndNotByClueId.do".equals(path)){
+            getActivityListByNameAndNotByClueId(request,response);
+        }else if ("/workbench/clue/bund.do".equals(path)){
+            bund(request,response);
         }
 
+    }
+
+    private void bund(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("进入到线索模块-绑定事件操作");
+        String cid = request.getParameter("cid");
+        String aids[]  = request.getParameterValues("aid");
+
+        ClueService cs = (ClueService) ServiceFactory.getService(new ClueServiceImpl());
+        boolean flag = cs.bund(cid,aids);
+        PrintJson.printJsonFlag(response,flag);
+
+    }
+
+    private void getActivityListByNameAndNotByClueId(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("进入到线索模块-关联查询操作");
+        String aname = request.getParameter("aname");
+        String clueId = request.getParameter("clueId");
+        Map<String,String> map = new HashMap<String, String>();
+        map.put("aname",aname);
+        map.put("clueId",clueId);
+        ActivityService as = (ActivityService) ServiceFactory.getService(new ActivityServiceImpl());
+        List<Activity> aList = as.getActivityListByNameAndNotByClueId(map);
+        PrintJson.printJsonObj(response,aList);
     }
 
     private void unbund(HttpServletRequest request, HttpServletResponse response) {
         System.out.println("进入到线索模块-解除关联操作");
         String id = request.getParameter("id");
-        ClueService as = (ClueService) ServiceFactory.getService(new ClueServiceImpl());
-        boolean flag = as.unbund(id);
+        ClueService cs = (ClueService) ServiceFactory.getService(new ClueServiceImpl());
+        boolean flag = cs.unbund(id);
         PrintJson.printJsonFlag(response,flag);
     }
 

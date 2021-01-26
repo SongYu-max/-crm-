@@ -54,6 +54,74 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		});
 		//页面加载完毕后，取出关联的市场活动信息列表
 		showActivityList();
+        $("#aname").keydown(function (event){
+            if (event.keyCode==13){
+            	$.ajax({
+					url:"workbench/clue/getActivityListByNameAndNotByClueId.do",
+					data:{
+						"aname":$.trim($("#aname").val()),
+						"clueId":"${c.id}"
+					},
+					type:"get",
+					dataType:"json",
+					success:function (data){
+
+							var html = "";
+							$.each(data,function (i,n){
+								html += '<tr>'
+								html += '<td><input type="checkbox" name="xz" value="'+n.id+'"/></td>'
+								html += '<td>'+n.name+'</td>'
+								html += '<td>'+n.startDate+'</td>'
+								html += '<td>'+n.endDate+'</td>'
+								html += '<td>'+n.owner+'</td>'
+								html += '</tr>'
+							})
+							$("#activitySearchBody").html(html);
+
+					}
+				})
+
+
+
+            	return false;
+            }
+        })
+		$("#bundBtn").click(function (){
+			var $xz = $("input[name=xz]:checked");
+			if ($xz.length==0){
+				alert("请选择需要关联的事件")
+			}else {
+				var param = "cid=${c.id}&";
+				for(var i=0;i<$xz.length;i++){
+					param += "aid="+$($xz[i]).val();
+					if (i<$xz.length-1){
+						param +='&';
+					}
+				}
+				$.ajax({
+					url:"workbench/clue/bund.do",
+					data:param,
+					type:"post",
+					dataType:"json",
+					success:function (data){
+
+						if (data.success){
+							//关联成功，刷新列表
+							showActivityList();
+							//清除搜索框中的内容
+							$("#aname").val("");
+							//清空列表
+							$("#activitySearchBody").html("");
+							//关闭模态窗口
+							$("#bundModal").modal("hide");
+						}else{
+							alert("关联事件失败")
+						}
+					}
+				})
+			}
+
+		})
 	});
 	function showActivityList(){
 
@@ -126,7 +194,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div class="btn-group" style="position: relative; top: 18%; left: 8px;">
 						<form class="form-inline" role="form">
 						  <div class="form-group has-feedback">
-						    <input type="text" class="form-control" style="width: 300px;" placeholder="请输入市场活动名称，支持模糊查询">
+						    <input type="text" class="form-control" id="aname" style="width: 300px;" placeholder="请输入市场活动名称，支持模糊查询">
 						    <span class="glyphicon glyphicon-search form-control-feedback"></span>
 						  </div>
 						</form>
@@ -142,27 +210,27 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<td></td>
 							</tr>
 						</thead>
-						<tbody>
-							<tr>
-								<td><input type="checkbox"/></td>
-								<td>发传单</td>
-								<td>2020-10-10</td>
-								<td>2020-10-20</td>
-								<td>zhangsan</td>
-							</tr>
-							<tr>
-								<td><input type="checkbox"/></td>
-								<td>发传单</td>
-								<td>2020-10-10</td>
-								<td>2020-10-20</td>
-								<td>zhangsan</td>
-							</tr>
+						<tbody id="activitySearchBody">
+<%--							<tr>--%>
+<%--								<td><input type="checkbox"/></td>--%>
+<%--								<td>发传单</td>--%>
+<%--								<td>2020-10-10</td>--%>
+<%--								<td>2020-10-20</td>--%>
+<%--								<td>zhangsan</td>--%>
+<%--							</tr>--%>
+<%--							<tr>--%>
+<%--								<td><input type="checkbox"/></td>--%>
+<%--								<td>发传单</td>--%>
+<%--								<td>2020-10-10</td>--%>
+<%--								<td>2020-10-20</td>--%>
+<%--								<td>zhangsan</td>--%>
+<%--							</tr>--%>
 						</tbody>
 					</table>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-					<button type="button" class="btn btn-primary" data-dismiss="modal">关联</button>
+					<button type="button" class="btn btn-primary" id="bundBtn">关联</button>
 				</div>
 			</div>
 		</div>

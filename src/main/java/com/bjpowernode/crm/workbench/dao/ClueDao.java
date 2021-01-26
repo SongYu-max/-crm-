@@ -9,5 +9,7 @@ public interface ClueDao {
 
     Clue detail(String id);
 
-    int unbund(String id);
+
+
+
 }
