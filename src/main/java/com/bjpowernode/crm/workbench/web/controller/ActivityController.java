@@ -54,6 +54,8 @@ public class ActivityController extends HttpServlet {
 
     }
 
+
+
     private void updateRemark(HttpServletRequest request, HttpServletResponse response) {
         System.out.println("进入到备注的修改操作");
         String id = request.getParameter("id");
