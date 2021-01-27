@@ -5,7 +5,27 @@
 
 <mapper namespace="com.bjpowernode.crm.workbench.dao.CustomerRemarkDao">
 	
-  	
+  	<insert id="save">
+        insert into tbl_customer_remark(
+            id,
+            noteContent,
+            createBy,
+            createTime,
+            editBy,
+            editTime,
+            editFlag,
+            customerId
+        )values (
+            #{id},
+            #{noteContent},
+            #{createBy},
+            #{createTime},
+            #{editBy},
+            #{editTime},
+            #{editFlag},
+            #{customerId}
+        )
+    </insert>
 </mapper>
 
 

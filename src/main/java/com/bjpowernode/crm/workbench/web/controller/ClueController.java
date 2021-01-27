@@ -12,6 +12,7 @@ import com.bjpowernode.crm.vo.PaginationVO;
 import com.bjpowernode.crm.workbench.domain.Activity;
 import com.bjpowernode.crm.workbench.domain.ActivityRemark;
 import com.bjpowernode.crm.workbench.domain.Clue;
+import com.bjpowernode.crm.workbench.domain.Tran;
 import com.bjpowernode.crm.workbench.service.ActivityService;
 import com.bjpowernode.crm.workbench.service.ClueService;
 import com.bjpowernode.crm.workbench.service.impl.ActivityServiceImpl;
@@ -50,9 +51,49 @@ public class ClueController extends HttpServlet {
             bund(request,response);
         }else if ("/workbench/clue/getActivityListByName.do".equals(path)){
             getActivityListByName(request,response);
+        }else if ("/workbench/clue/convert.do".equals(path)){
+            convert(request,response);
         }
 
     }
+
+    private void convert(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        System.out.println("执行线索转换的操作");
+        String clueId = request.getParameter("clueId");
+        String flag= request.getParameter("flag");
+        Tran t = null;
+        //如需要创建交易
+        if ("a".equals(flag)){
+            t = new Tran();
+            //接收交易表单中的参数
+            String money = request.getParameter("money");
+            String name = request.getParameter("name =");
+            String expectedDate = request.getParameter("expectedDate");
+            String stage = request.getParameter("stage");
+            String activityId = request.getParameter("activityId");
+            String id = UUIDUtil.getUUID();
+            String createTime = DateTimeUtil.getSysTime();
+            String createBy = ((User)request.getSession().getAttribute("user")).getName();
+
+            t.setId(id);
+            t.setMoney(money);
+            t.setName(name);
+            t.setExpectedDate(expectedDate);
+            t.setStage(stage);
+            t.setActivityId(activityId);
+            t.setCreateTime(createTime);
+            t.setCreateBy(createBy);
+
+        }
+        ClueService cs = (ClueService) ServiceFactory.getService(new ClueServiceImpl());
+        String createBy = ((User)request.getSession().getAttribute("user")).getName();
+        boolean flag1 = cs.convert(clueId,t,createBy);
+        if (flag1) {
+            response.sendRedirect(request.getContextPath()+"/workbench/clue/index.jsp");
+        }
+
+    }
+
     private void getActivityListByName(HttpServletRequest request, HttpServletResponse response) {
         System.out.println("查询市场活动列表（根据名称模糊查）");
         String aname = request.getParameter("aname");

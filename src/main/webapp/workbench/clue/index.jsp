@@ -520,16 +520,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<td>张三</td>
 							<td>将来联系</td>
 						</tr>
-                        <tr class="active">
-                            <td><input type="checkbox" /></td>
-                            <td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='workbench/clue/detail.jsp';">李四先生</a></td>
-                            <td>动力节点</td>
-                            <td>010-84846003</td>
-                            <td>12345678901</td>
-                            <td>广告</td>
-                            <td>zhangsan</td>
-                            <td>已联系</td>
-                        </tr>
+						<tr>
+							<td><input type="checkbox" /></td>
+							<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='workbench/clue/detail.do?id=798c16bbef0c48aa8799f717118ea844';">王健林先生</a></td>
+							<td>万达集团</td>
+							<td>010-66666666</td>
+							<td>13666666666</td>
+							<td>合作伙伴研讨会</td>
+							<td>张三</td>
+							<td>已联系</td>
+						</tr>
 					</tbody>
 				</table>
 			</div>

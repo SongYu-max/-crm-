@@ -76,6 +76,7 @@
     <url-pattern>/workbench/clue/getActivityListByNameAndNotByClueId.do</url-pattern>
     <url-pattern>/workbench/clue/bund.do</url-pattern>
     <url-pattern>/workbench/clue/getActivityListByName.do</url-pattern>
+    <url-pattern>/workbench/clue/convert.do</url-pattern>
 
   </servlet-mapping>
 
