@@ -24,18 +24,18 @@ Set<String> set = pMap.keySet();
 <script type="text/javascript" src="jquery/bs_typeahead/bootstrap3-typeahead.min.js"></script>
 <script>
 
-	<%--var json = {--%>
-	<%--	<%--%>
-	<%--		for (String key:set){--%>
-	<%--			String value = pMap.get(key);--%>
-	<%--	%>--%>
-	<%--		"<%=key%>":<%=value%>,--%>
-	<%--	<%--%>
-	<%--		}--%>
-	<%--	%>--%>
-	<%--};--%>
+	var json = {
+		<%
+			for (String key:set){
+				String value = pMap.get(key);
+		%>
+			"<%=key%>":<%=value%>,
+		<%
+			}
+		%>
+	};
 
-	<%--alert(json);--%>
+	// alert(json);
 
 
 	$(function (){
@@ -74,6 +74,9 @@ Set<String> set = pMap.keySet();
 			//取得选中的阶段
 			var stage = $("#create-stage").val();
 			alert(stage);
+			var possibility = json[stage];
+			// alert(possibility);
+			$("#create-possibility").val(possibility);
 		})
 
 
