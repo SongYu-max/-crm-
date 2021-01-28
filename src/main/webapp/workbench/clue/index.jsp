@@ -530,6 +530,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<td>张三</td>
 							<td>已联系</td>
 						</tr>
+						<tr>
+							<td><input type="checkbox" /></td>
+							<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='workbench/clue/detail.do?id=affd151bc5004b4bb7b8b9453887dc1d';">雷军先生</a></td>
+							<td>小米集团</td>
+							<td>022-88888888</td>
+							<td>18888888888</td>
+							<td>内部研讨会 </td>
+							<td>张三</td>
+							<td>已联系</td>
+						</tr>
 					</tbody>
 				</table>
 			</div>

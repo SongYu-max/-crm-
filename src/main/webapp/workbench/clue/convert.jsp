@@ -163,6 +163,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 		<form id="tranForm" action="workbench/clue/convert.do" method="post">
 			<input type="hidden" name="flag" value="a">
+			<input type="hidden" name="clueId" value="${param.id}">
 		  <div class="form-group" style="width: 400px; position: relative; left: 20px;">
 		    <label for="amountOfMoney">金额</label>
 		    <input type="text" class="form-control" id="amountOfMoney" name="money">
