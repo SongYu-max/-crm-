@@ -1,8 +1,12 @@
+<%@ page import="java.util.Map" %>
+<%@ page import="java.util.Set" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+Map<String,String> pMap =(Map<String,String>) application.getAttribute("pMap");
+Set<String> set = pMap.keySet();
 %>
 <!DOCTYPE html>
 <html>
@@ -19,6 +23,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script type="text/javascript" src="jquery/bootstrap-datetimepicker-master/locale/bootstrap-datetimepicker.zh-CN.js"></script>
 <script type="text/javascript" src="jquery/bs_typeahead/bootstrap3-typeahead.min.js"></script>
 <script>
+
+	<%--var json = {--%>
+	<%--	<%--%>
+	<%--		for (String key:set){--%>
+	<%--			String value = pMap.get(key);--%>
+	<%--	%>--%>
+	<%--		"<%=key%>":<%=value%>,--%>
+	<%--	<%--%>
+	<%--		}--%>
+	<%--	%>--%>
+	<%--};--%>
+
+	<%--alert(json);--%>
+
+
 	$(function (){
 		$(".time1").datetimepicker({
 			minView: "month",
@@ -50,6 +69,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			},
 			delay: 150
 		});
+
+		$("#create-stage").change(function (){
+			//取得选中的阶段
+			var stage = $("#create-stage").val();
+			alert(stage);
+		})
 
 
 	})
@@ -200,7 +225,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>
 			<label for="create-transactionStage" class="col-sm-2 control-label">阶段<span style="font-size: 15px; color: red;">*</span></label>
 			<div class="col-sm-10" style="width: 300px;">
-			  <select class="form-control" id="create-transactionStage">
+			  <select class="form-control" id="create-stage">
 			  	<option></option>
 				  <c:forEach items="${stageList}" var="s">
 					  <option value="${s.value}">${s.text}</option>

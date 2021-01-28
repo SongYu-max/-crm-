@@ -9,9 +9,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import java.awt.desktop.SystemEventListener;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class SysInitListener implements ServletContextListener {
     /*
@@ -47,6 +45,23 @@ public class SysInitListener implements ServletContextListener {
 
         }
         System.out.println("服务器缓存处理数据字典结束");
-    }
 
+                /*
+            处理Stage2Possibility.properties文件步骤
+                解析该文件，将该属性文件中的键值对关系处理成为java中的键值对关系（map）
+
+         */
+        Map<String,String> pMap =new HashMap<String, String>();
+
+        ResourceBundle rb = ResourceBundle.getBundle("Stage2Possibility");
+
+        Enumeration<String> e = rb.getKeys();
+
+        while (e.hasMoreElements()){
+            String key = e.nextElement();
+            String value = rb.getString(key);
+            pMap.put(key,value);
+        }
+        application.setAttribute("pMap",pMap);
+    }
 }
