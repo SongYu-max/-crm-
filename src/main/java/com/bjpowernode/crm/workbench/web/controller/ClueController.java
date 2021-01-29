@@ -67,7 +67,7 @@ public class ClueController extends HttpServlet {
             t = new Tran();
             //接收交易表单中的参数
             String money = request.getParameter("money");
-            String name = request.getParameter("name =");
+            String name = request.getParameter("name");
             String expectedDate = request.getParameter("expectedDate");
             String stage = request.getParameter("stage");
             String activityId = request.getParameter("activityId");

@@ -5,11 +5,16 @@ import com.bjpowernode.crm.settings.domain.User;
 import com.bjpowernode.crm.settings.service.UserService;
 import com.bjpowernode.crm.settings.service.impl.UserServiceImpl;
 
+import com.bjpowernode.crm.utils.DateTimeUtil;
 import com.bjpowernode.crm.utils.PrintJson;
 import com.bjpowernode.crm.utils.ServiceFactory;
+import com.bjpowernode.crm.utils.UUIDUtil;
 import com.bjpowernode.crm.workbench.domain.Customer;
+import com.bjpowernode.crm.workbench.domain.Tran;
 import com.bjpowernode.crm.workbench.service.CustomerService;
+import com.bjpowernode.crm.workbench.service.TranService;
 import com.bjpowernode.crm.workbench.service.impl.CustomerServiceImpl;
+import com.bjpowernode.crm.workbench.service.impl.TranServiceImpl;
 
 
 import javax.servlet.ServletException;
@@ -31,6 +36,56 @@ public class TranController extends HttpServlet {
             add(request,response);
         }else if ("/workbench/transaction/getCustomerName.do".equals(path)){
             getCustomerName(request,response);
+        }else if ("/workbench/transaction/save.do".equals(path)){
+            save(request,response);
+        }
+
+    }
+
+    private void save(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("执行添加交易操作");
+        String id = UUIDUtil.getUUID();
+        String owner = request.getParameter("owner");
+        String money = request.getParameter("money");
+        String name = request.getParameter("name");
+        String expectedDate = request.getParameter("expectedDate");
+        String customerName = request.getParameter("customerName");
+        String stage = request.getParameter("stage");
+        String type = request.getParameter("type");
+        String source = request.getParameter("source");
+        String activityId = request.getParameter("activityId");
+        String contactsId = request.getParameter("contactsId");
+        String createBy = ((User)request.getSession().getAttribute("user")).getName();
+        String createTime = DateTimeUtil.getSysTime();
+        String description = request.getParameter("description");
+        String contactSummary = request.getParameter("contactSummary");
+        String nextContactTime = request.getParameter("nextContactTime");
+
+        Tran t = new Tran();
+        t.setId(id);
+        t.setOwner(owner);
+        t.setMoney(money);
+        t.setName(name);
+        t.setExpectedDate(expectedDate);
+        t.setCustomerId(customerName);
+        t.setStage(stage);
+        t.setType(type);
+        t.setSource(source);
+        t.setActivityId(activityId);
+        t.setContactsId(contactsId);
+        t.setCreateBy(createBy);
+        t.setCreateTime(createTime);
+        t.setDescription(description);
+        t.setContactSummary(contactSummary);
+        t.setNextContactTime(nextContactTime);
+
+        TranService ts = (TranService) ServiceFactory.getService(new TranServiceImpl());
+        boolean flag = ts.save(t,customerName);
+        if (flag){
+            //转发（一般用于session存值的时候）
+//            request.getRequestDispatcher("/workbench/transaction/index.jsp").forward(request,response);
+            //重定向
+            response.sendRedirect(request.getContextPath()+"/workbench/transaction/index.jsp");
         }
 
     }
