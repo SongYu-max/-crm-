@@ -20,8 +20,32 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script type="text/javascript">
 
 	$(function(){
-		
-		
+	    /*
+	        主页面细化，后期再改
+
+	     */
+		// $.ajax({
+		// 	url:"workbench/transaction/getTranList.do",
+		// 	type:"get",
+		// 	dataType:"json",
+		// 	success:function (data){
+		// 		var html = "";
+		// 		$.each(data,function (i,n){
+		// 			html += '<tr>';
+		// 			html += '<td><input type="checkbox" /></td>';
+		// 			html += '<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href=\'workbench/transaction/detail.jsp\';">'+n.name+'</a></td>';
+		// 			html += '<td>动力节点</td>';
+		// 			html += '<td>'+n.stage+'</td>';
+		// 			html += '<td>'+n.type+'</td>';
+		// 			html += '<td>zhangsan</td>';
+		// 			html += '<td>广告</td>';
+		// 			html += '<td>李四</td>';
+		// 			html += '</tr>';
+		// 		})
+        //
+		// 	}
+		// })
+		//
 		
 	});
 	
@@ -158,13 +182,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<tbody>
 						<tr>
 							<td><input type="checkbox" /></td>
-							<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='workbench/transaction/detail.jsp';">动力节点-交易01</a></td>
-							<td>动力节点</td>
-							<td>谈判/复审</td>
-							<td>新业务</td>
-							<td>zhangsan</td>
-							<td>广告</td>
-							<td>李四</td>
+							<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='workbench/transaction/detail.do?id=4eec1397de764e70994115a3b2cb94bf';">小目标计划</a></td>
+							<td>阿里巴巴</td>
+							<td>06谈判/复审</td>
+							<td>已有业务</td>
+							<td>张三</td>
+							<td>合作伙伴</td>
+							<td>马云</td>
 						</tr>
                         <tr class="active">
                             <td><input type="checkbox" /></td>

@@ -90,6 +90,8 @@
     <url-pattern>/workbench/transaction/add.do</url-pattern>
     <url-pattern>/workbench/transaction/getCustomerName.do</url-pattern>
     <url-pattern>/workbench/transaction/save.do</url-pattern>
+    <url-pattern>/workbench/transaction/getTranList.do</url-pattern>
+    <url-pattern>/workbench/transaction/detail.do</url-pattern>
 
   </servlet-mapping>
 

@@ -38,7 +38,25 @@ public class TranController extends HttpServlet {
             getCustomerName(request,response);
         }else if ("/workbench/transaction/save.do".equals(path)){
             save(request,response);
+        }else if ("/workbench/transaction/getTranList.do".equals(path)){
+            getTranList(request,response);
+        }else if ("/workbench/transaction/detail.do".equals(path)){
+            detail(request,response);
         }
+
+    }
+
+    private void detail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("进入交易-跳转详细页-查询相关信息操作");
+        String id = request.getParameter("id");
+        TranService ts = (TranService) ServiceFactory.getService(new TranServiceImpl());
+        Tran t = ts.getTranById(id);
+        request.setAttribute("t",t);
+        request.getRequestDispatcher("/workbench/transaction/detail.jsp").forward(request,response);
+    }
+
+    //细化页面相关，后期加上
+    private void getTranList(HttpServletRequest request, HttpServletResponse response) {
 
     }
 

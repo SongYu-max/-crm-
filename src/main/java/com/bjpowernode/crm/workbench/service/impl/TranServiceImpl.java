@@ -64,4 +64,10 @@ public class TranServiceImpl implements TranService {
         }
         return flag;
     }
+
+    @Override
+    public Tran getTranById(String id) {
+        Tran t = tranDao.getTranById(id);
+        return t;
+    }
 }

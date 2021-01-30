@@ -42,6 +42,43 @@
             #{nextContactTime}
         )
     </insert>
+    <select id="getTranById" resultType="Tran">
+        select
+
+            t.id,
+            u.name as owner,
+            t.money,
+            t.name,
+            t.expectedDate,
+            c.name as customerId,
+            t.stage,
+            t.type,
+            t.source,
+            a.name as activityId,
+            con.fullname as contactsId,
+            t.createBy,
+            t.createTime,
+            t.editBy,
+            t.editTime,
+            t.description,
+            t.contactSummary,
+            t.nextContactTime
+
+        from tbl_tran t
+        join tbl_user u
+        on t.owner = u.id
+
+        join tbl_customer c
+        on t.customerId = c.id
+
+        left join tbl_contacts con
+        on t.contactsId = con.id
+
+        left join tbl_activity a
+        on t.activityId = a.id
+
+        where t.id = #{id}
+    </select>
 </mapper>
 
 
