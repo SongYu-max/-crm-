@@ -70,4 +70,10 @@ public class TranServiceImpl implements TranService {
         Tran t = tranDao.getTranById(id);
         return t;
     }
+
+    @Override
+    public List<TranHistory> getTranHistoryByTranId(String tranId) {
+        List<TranHistory> tList = tranHistoryDao.getTranHistoryByTranId(tranId);
+        return tList;
+    }
 }

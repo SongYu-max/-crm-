@@ -11,6 +11,7 @@ import com.bjpowernode.crm.utils.ServiceFactory;
 import com.bjpowernode.crm.utils.UUIDUtil;
 import com.bjpowernode.crm.workbench.domain.Customer;
 import com.bjpowernode.crm.workbench.domain.Tran;
+import com.bjpowernode.crm.workbench.domain.TranHistory;
 import com.bjpowernode.crm.workbench.service.CustomerService;
 import com.bjpowernode.crm.workbench.service.TranService;
 import com.bjpowernode.crm.workbench.service.impl.CustomerServiceImpl;
@@ -23,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 public class TranController extends HttpServlet {
     @Override
@@ -42,8 +44,25 @@ public class TranController extends HttpServlet {
             getTranList(request,response);
         }else if ("/workbench/transaction/detail.do".equals(path)){
             detail(request,response);
+        }else if ("/workbench/transaction/getTranHistoryByTranId.do".equals(path)){
+            getTranHistoryByTranId(request,response);
         }
 
+    }
+
+    private void getTranHistoryByTranId(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("进入交易-详细页-交易历史列表");
+        String tranId = request.getParameter("tranId");
+        TranService ts = (TranService) ServiceFactory.getService(new TranServiceImpl());
+        List<TranHistory> tList = ts.getTranHistoryByTranId(tranId);
+        Map<String,String> pMap = (Map<String, String>) request.getServletContext().getAttribute("pMap");
+
+        for (TranHistory th:tList){
+            String stage = th.getStage();
+            String possibility = pMap.get(stage);
+            th.setPossibility(possibility);
+        }
+        PrintJson.printJsonObj(response,tList);
     }
 
     private void detail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -51,6 +70,12 @@ public class TranController extends HttpServlet {
         String id = request.getParameter("id");
         TranService ts = (TranService) ServiceFactory.getService(new TranServiceImpl());
         Tran t = ts.getTranById(id);
+
+        String stage = t.getStage();
+        Map<String,String> pMap = (Map<String, String>) request.getServletContext().getAttribute("pMap");
+        String possibility = pMap.get(stage);
+        t.setPossibility(possibility);
+
         request.setAttribute("t",t);
         request.getRequestDispatcher("/workbench/transaction/detail.jsp").forward(request,response);
     }

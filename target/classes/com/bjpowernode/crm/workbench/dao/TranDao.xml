@@ -71,10 +71,10 @@
         join tbl_customer c
         on t.customerId = c.id
 
-        join tbl_contacts con
+        left join tbl_contacts con
         on t.contactsId = con.id
 
-        join tbl_activity a
+        left join tbl_activity a
         on t.activityId = a.id
 
         where t.id = #{id}
