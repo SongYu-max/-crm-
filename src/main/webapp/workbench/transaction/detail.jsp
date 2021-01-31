@@ -1,7 +1,37 @@
+<%@ page import="java.util.List" %>
+<%@ page import="com.bjpowernode.crm.settings.domain.DicType" %>
+<%@ page import="com.bjpowernode.crm.settings.domain.DicValue" %>
+<%@ page import="java.util.Map" %>
+<%@ page import="java.util.Set" %>
+<%@ page import="com.bjpowernode.crm.workbench.domain.Tran" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+    //准备字典类型为stage的字典值列表
+    List<DicValue> dvList = (List<DicValue>) application.getAttribute("stageList");
+
+    //准备阶段和可能性之间的对应关系
+    Map<String,String> pMap = (Map<String, String>) application.getAttribute("pMap");
+
+    //根据pMap 准备pMap中的key集合
+    Set<String> set = pMap.keySet();
+
+    //准备：前面正常阶段和后面丢失阶段的分界点下标
+    int point = 0;
+    for (int i=0;i<dvList.size();i++){
+    	//取得每一个字典值
+        DicValue dv = dvList.get(i);
+        //从dv中获取value值
+		String stage = dv.getValue();
+		//根据stage获取possibility
+		String possibility = pMap.get(stage);
+		//如果可能性为0，说明找到了前面正常阶段和后面丢失阶段的分界点
+		if ("0".equals(possibility)){
+			point=i;
+			break;
+		}
+    }
 %>
 <!DOCTYPE html>
 <html>
@@ -114,7 +144,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		})
 
 	});
-	
+	/*
+		方法：改变交易阶段
+		参数：
+			stage:需要改变的阶段
+			i:需要改变阶段对应的下标
+	 */
 	
 	
 </script>
@@ -141,24 +176,187 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 阶段状态 -->
 	<div style="position: relative; left: 40px; top: -50px;">
 		阶段&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<span class="glyphicon glyphicon-ok-circle mystage" data-toggle="popover" data-placement="bottom" data-content="资质审查" style="color: #90F790;"></span>
-		-----------
-		<span class="glyphicon glyphicon-ok-circle mystage" data-toggle="popover" data-placement="bottom" data-content="需求分析" style="color: #90F790;"></span>
-		-----------
-		<span class="glyphicon glyphicon-ok-circle mystage" data-toggle="popover" data-placement="bottom" data-content="价值建议" style="color: #90F790;"></span>
-		-----------
-		<span class="glyphicon glyphicon-ok-circle mystage" data-toggle="popover" data-placement="bottom" data-content="确定决策者" style="color: #90F790;"></span>
-		-----------
-		<span class="glyphicon glyphicon-map-marker mystage" data-toggle="popover" data-placement="bottom" data-content="提案/报价" style="color: #90F790;"></span>
-		-----------
-		<span class="glyphicon glyphicon-record mystage" data-toggle="popover" data-placement="bottom" data-content="谈判/复审"></span>
-		-----------
-		<span class="glyphicon glyphicon-record mystage" data-toggle="popover" data-placement="bottom" data-content="成交"></span>
-		-----------
-		<span class="glyphicon glyphicon-record mystage" data-toggle="popover" data-placement="bottom" data-content="丢失的线索"></span>
-		-----------
-		<span class="glyphicon glyphicon-record mystage" data-toggle="popover" data-placement="bottom" data-content="因竞争丢失关闭"></span>
-		-----------
+		<%
+			//准备当前阶段
+			Tran t = (Tran) request.getAttribute("t");
+			String currentStage = t.getStage();
+			//准备当前阶段的可能性
+			String currentPossibility = pMap.get(currentStage);
+
+			//判断当前阶段
+			//如果当前阶段可能性为0,则前7个一定是黑圈，后两个不一定，一红叉一黑叉
+			if ("0".equals(currentPossibility)){
+
+				for (int i=0;i<dvList.size();i++){
+
+					//取出来遍历出来的每一个阶段，根据阶段取得其可能性
+					DicValue dv = dvList.get(i);
+					String listStage = dv.getValue();
+					String listPossibility = pMap.get(listStage);
+
+
+					//如果遍历出来的阶段可能性为0,则说明是后面2个
+					if ("0".equals(listPossibility)){
+
+						//如果是当前阶段
+						if (listStage.equals(currentStage)){
+							//红叉---------------------
+
+		%>
+
+
+				<span id="<%=i%>" onclick="changeStage('<%=listStage%>','<%=i%>')"
+					  class="glyphicon glyphicon-remove mystage"
+					data-toggle="popover" data-placement="bottom"
+					data-content="<%=dv.getText()%>" style="color: #FFFF00;"></span>
+				----------
+
+
+		<%
+
+						}else {
+							//黑叉-------------------
+		%>
+
+
+		<span id="<%=i%>" onclick="changeStage('<%=listStage%>','<%=i%>')"
+			  class="glyphicon glyphicon-remove mystage"
+			  data-toggle="popover" data-placement="bottom"
+			  data-content="<%=dv.getText()%>" style="color: #000000;"></span>
+		----------
+
+
+		<%
+
+						}
+
+					//如果遍历出来的阶段可能性不为0，说明前7个一定是黑圈
+					}else {
+						//黑圈
+
+		%>
+
+
+		<span id="<%=i%>" onclick="changeStage('<%=listStage%>','<%=i%>')"
+			  class="glyphicon glyphicon-record mystage"
+			  data-toggle="popover" data-placement="bottom"
+			  data-content="<%=dv.getText()%>" style="color: #000000;"></span>
+		----------
+
+
+		<%
+
+					}
+				}
+
+
+			//如果当前阶段可能性不为0，则前7个可能是绿圈、绿色标记、黑圈，后两个一定是黑叉
+			}else{
+				//准备当前阶段的下标
+				int index = 0;
+				for(int i=0;i<dvList.size();i++){
+
+					DicValue dv = dvList.get(i);
+					String stage = dv.getValue();
+
+					if (stage.equals(currentStage)){
+						index=i;
+						break;
+					}
+				}
+				for (int i=0;i<dvList.size();i++) {
+
+					//取出来遍历出来的每一个阶段，根据阶段取得其可能性
+					DicValue dv = dvList.get(i);
+					String listStage = dv.getValue();
+					String listPossibility = pMap.get(listStage);
+					if ("0".equals(listPossibility)){
+						//黑叉
+
+		%>
+
+
+		<span id="<%=i%>" onclick="changeStage('<%=listStage%>','<%=i%>')"
+			  class="glyphicon glyphicon-remove mystage"
+			  data-toggle="popover" data-placement="bottom"
+			  data-content="<%=dv.getText()%>" style="color: #000000;"></span>
+		----------
+
+
+		<%
+
+
+					}else {
+						if (i==index){
+							//绿色正在标
+		%>
+
+
+		<span id="<%=i%>" onclick="changeStage('<%=listStage%>','<%=i%>')"
+			  class="glyphicon glyphicon-map-marker mystage"
+			  data-toggle="popover" data-placement="bottom"
+			  data-content="<%=dv.getText()%>" style="color: #90F790;"></span>
+		----------
+
+
+		<%
+
+						}else if (i<index){
+							//绿勾
+		%>
+
+
+		<span id="<%=i%>" onclick="changeStage('<%=listStage%>','<%=i%>')"
+			  class="glyphicon glyphicon-ok-circle mystage"
+			  data-toggle="popover" data-placement="bottom"
+			  data-content="<%=dv.getText()%>" style="color: #90F790;"></span>
+		----------
+
+
+		<%
+						}else if (i>index){
+							//黑圈
+		%>
+
+
+		<span id="<%=i%>" onclick="changeStage('<%=listStage%>','<%=i%>')"
+			  class="glyphicon glyphicon-record mystage"
+			  data-toggle="popover" data-placement="bottom"
+			  data-content="<%=dv.getText()%>" style="color: #000000;"></span>
+		----------
+
+
+		<%
+						}
+					}
+
+
+				}
+
+
+			}
+
+
+
+		%>
+<%--		<span class="glyphicon glyphicon-ok-circle mystage" data-toggle="popover" data-placement="bottom" data-content="资质审查" style="color: #90F790;"></span>--%>
+<%--		-------------%>
+<%--		<span class="glyphicon glyphicon-ok-circle mystage" data-toggle="popover" data-placement="bottom" data-content="需求分析" style="color: #90F790;"></span>--%>
+<%--		-------------%>
+<%--		<span class="glyphicon glyphicon-ok-circle mystage" data-toggle="popover" data-placement="bottom" data-content="价值建议" style="color: #90F790;"></span>--%>
+<%--		-------------%>
+<%--		<span class="glyphicon glyphicon-ok-circle mystage" data-toggle="popover" data-placement="bottom" data-content="确定决策者" style="color: #90F790;"></span>--%>
+<%--		-------------%>
+<%--		<span class="glyphicon glyphicon-map-marker mystage" data-toggle="popover" data-placement="bottom" data-content="提案/报价" style="color: #90F790;"></span>--%>
+<%--		-------------%>
+<%--		<span class="glyphicon glyphicon-record mystage" data-toggle="popover" data-placement="bottom" data-content="谈判/复审"></span>--%>
+<%--		-------------%>
+<%--		<span class="glyphicon glyphicon-record mystage" data-toggle="popover" data-placement="bottom" data-content="成交"></span>--%>
+<%--		-------------%>
+<%--		<span class="glyphicon glyphicon-record mystage" data-toggle="popover" data-placement="bottom" data-content="丢失的线索"></span>--%>
+<%--		-------------%>
+<%--		<span class="glyphicon glyphicon-record mystage" data-toggle="popover" data-placement="bottom" data-content="因竞争丢失关闭"></span>--%>
+<%--		-------------%>
 		<span class="closingDate">${t.expectedDate}</span>
 	</div>
 	
