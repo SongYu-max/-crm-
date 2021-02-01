@@ -150,6 +150,135 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			stage:需要改变的阶段
 			i:需要改变阶段对应的下标
 	 */
+	function changeStage(stage,i){
+		// alert(stage);
+		// alert(i);
+		$.ajax({
+			url:"workbench/transaction/changeStage.do",
+			data:{
+				"id":"${t.id}",
+				"stage":stage,
+				"money":"${t.money}",	//生成交易历史用
+				"expectedDate":"${t.expectedDate}"	//生成交易历史用
+			},
+			type:"post",
+			dataType:"json",
+			success:function (data){
+				if (data.success){
+					//改变成功，局部刷新数据
+					$("#stage").html(data.t.stage);
+					$("#possibility").html(data.t.possibility);
+					$("#editBy").html(data.t.editBy);
+					$("#editTime").html(data.t.editTime);
+					//刷新图标
+					changeIcon(stage,i);
+
+				}else {
+					alert("改变阶段失败")
+				}
+			}
+		})
+	}
+	function changeIcon(stage,index1){
+		//当前阶段
+		var currentStage = stage;
+		//当前阶段可能性
+		var currentPossibility = $("#possibility").html();
+		//当前阶段的下标
+		var index = index1;
+		//前面正常阶段和后面丢失阶段的分界点下标
+		var point = "<%=point%>";
+		// alert(currentStage);
+		// alert(currentPossibility);
+		// alert(index);
+		// alert(point);
+
+		//如果当前阶段可能性为0
+		if (currentPossibility=="0"){
+
+			//遍历前7个
+			for (var i=0;i<point;i++){
+				//黑圈
+				//移除掉原有样式
+				$("#"+i).removeClass();
+				//添加新样式
+				$("#"+i).addClass("glyphicon glyphicon-record mystage")
+				//为新样式赋予颜色
+				$("#"+i).css("color","#000000");
+			}
+			for (var i=point;i<<%=dvList.size()%>;i++){
+				//如果是当前阶段
+				if (i==index){
+					//红叉
+					//移除掉原有样式
+					$("#"+i).removeClass();
+					//添加新样式
+					$("#"+i).addClass("glyphicon glyphicon-remove mystage")
+					//为新样式赋予颜色
+					$("#"+i).css("color","#FF0000");
+				}else {
+					//黑叉
+					//移除掉原有样式
+					$("#"+i).removeClass();
+					//添加新样式
+					$("#"+i).addClass("glyphicon glyphicon-remove mystage")
+					//为新样式赋予颜色
+					$("#"+i).css("color","#000000");
+
+				}
+			}
+
+
+		//如果当前阶段可能性不为0
+		}else {
+			//遍历前7个
+			for(var i=0;i<point;i++){
+				if (i==index){
+					//绿标
+					//移除掉原有样式
+					$("#"+i).removeClass();
+					//添加新样式
+					$("#"+i).addClass("glyphicon glyphicon-map-marker mystage")
+					//为新样式赋予颜色
+					$("#"+i).css("color","#90F790");
+
+
+					//如果小于当前阶段
+				}else if (i<index){
+					//绿勾
+					//移除掉原有样式
+					$("#"+i).removeClass();
+					//添加新样式
+					$("#"+i).addClass("glyphicon glyphicon-ok-circle mystage")
+					//为新样式赋予颜色
+					$("#"+i).css("color","#90F790");
+
+
+					//如果大于当前阶段
+				}else if (i>index){
+					//黑圈
+					//移除掉原有样式
+					$("#"+i).removeClass();
+					//添加新样式
+					$("#"+i).addClass("glyphicon glyphicon-record mystage")
+					//为新样式赋予颜色
+					$("#"+i).css("color","#000000");
+
+				}
+			}
+			for (var i=point;i<<%=dvList.size()%>;i++){
+				//黑叉
+				//移除掉原有样式
+				$("#"+i).removeClass();
+				//添加新样式
+				$("#"+i).addClass("glyphicon glyphicon-record mystage")
+				//为新样式赋予颜色
+				$("#"+i).css("color","#000000");
+
+			}
+
+		}
+	}
 	
 	
 </script>
@@ -208,7 +337,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<span id="<%=i%>" onclick="changeStage('<%=listStage%>','<%=i%>')"
 					  class="glyphicon glyphicon-remove mystage"
 					data-toggle="popover" data-placement="bottom"
-					data-content="<%=dv.getText()%>" style="color: #FFFF00;"></span>
+					data-content="<%=dv.getText()%>" style="color: #FF0000;"></span>
 				----------
 
 
@@ -382,7 +511,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div style="width: 300px; color: gray;">客户名称</div>
 			<div style="width: 300px;position: relative; left: 200px; top: -20px;"><b>${t.customerId}</b></div>
 			<div style="width: 300px;position: relative; left: 450px; top: -40px; color: gray;">阶段</div>
-			<div style="width: 300px;position: relative; left: 650px; top: -60px;"><b>${t.stage}</b></div>
+			<div style="width: 300px;position: relative; left: 650px; top: -60px;"><b id="stage">${t.stage}</b></div>
 			<div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px;"></div>
 			<div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px; left: 450px;"></div>
 		</div>
@@ -390,7 +519,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div style="width: 300px; color: gray;">类型</div>
 			<div style="width: 300px;position: relative; left: 200px; top: -20px;"><b>${t.type}</b></div>
 			<div style="width: 300px;position: relative; left: 450px; top: -40px; color: gray;">可能性</div>
-			<div style="width: 300px;position: relative; left: 650px; top: -60px;"><b>${t.possibility}</b></div>
+			<div style="width: 300px;position: relative; left: 650px; top: -60px;"><b id="possibility">${t.possibility}</b></div>
 			<div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px;"></div>
 			<div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px; left: 450px;"></div>
 		</div>
@@ -414,7 +543,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 		<div style="position: relative; left: 40px; height: 30px; top: 70px;">
 			<div style="width: 300px; color: gray;">修改者</div>
-			<div style="width: 500px;position: relative; left: 200px; top: -20px;"><b>${t.editBy}&nbsp;&nbsp;</b><small style="font-size: 10px; color: gray;">${t.editTime}</small></div>
+			<div style="width: 500px;position: relative; left: 200px; top: -20px;"><b id="editBy">${t.editBy}&nbsp;&nbsp;</b><small id="editTime" style="font-size: 10px; color: gray;">${t.editTime}</small></div>
 			<div style="height: 1px; width: 550px; background: #D5D5D5; position: relative; top: -20px;"></div>
 		</div>
 		<div style="position: relative; left: 40px; height: 30px; top: 80px;">
