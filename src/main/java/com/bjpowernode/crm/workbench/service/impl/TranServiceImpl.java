@@ -11,7 +11,9 @@ import com.bjpowernode.crm.workbench.domain.Tran;
 import com.bjpowernode.crm.workbench.domain.TranHistory;
 import com.bjpowernode.crm.workbench.service.TranService;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TranServiceImpl implements TranService {
     private TranDao tranDao = SqlSessionUtil.getSqlSession().getMapper(TranDao.class);
@@ -98,6 +100,26 @@ public class TranServiceImpl implements TranService {
             flag=false;
         }
         return flag;
+    }
+
+
+
+
+    @Override
+    public Map<String, Object> getCharts() {
+
+        //取得total
+        int total = tranDao.getTranTotal();
+
+        //取得dataList
+        List<Map<String,Object>> dataList = tranDao.getTranList();
+        //将total和dataList放到map中
+        Map<String,Object> map = new HashMap<String, Object>();
+        map.put("total",total);
+        map.put("dataList",dataList);
+        //返回map
+
+        return map;
     }
 
 

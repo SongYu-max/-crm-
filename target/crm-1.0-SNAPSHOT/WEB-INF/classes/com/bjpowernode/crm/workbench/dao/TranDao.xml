@@ -83,6 +83,15 @@
         update tbl_tran set stage=#{stage},editBy=#{editBy},editTime=#{editTime}
         where id = #{id}
     </update>
+    <select id="getTranList" resultType="map">
+        select
+        count(*) as value,
+        stage as name
+        from tbl_tran group by stage
+    </select>
+    <select id="getTranTotal" resultType="int">
+        select count(*) from tbl_tran
+    </select>
 </mapper>
 
 

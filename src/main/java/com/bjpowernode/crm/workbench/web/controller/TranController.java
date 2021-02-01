@@ -49,7 +49,24 @@ public class TranController extends HttpServlet {
             getTranHistoryByTranId(request,response);
         }else if ("/workbench/transaction/changeStage.do".equals(path)){
             changeStage(request,response);
+        }else if ("/workbench/transaction/getCharts.do".equals(path)){
+            getCharts(request,response);
         }
+
+    }
+
+    private void getCharts(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("进入到获取echarts数据");
+        TranService ts = (TranService) ServiceFactory.getService(new TranServiceImpl());
+
+//        List<Tran> tList = ts.getTranList();
+//        int total = ts.getTranTotal();
+
+
+        Map<String,Object> map = ts.getCharts();
+//        map.put("total",total);
+//        map.put("tList",tList);
+        PrintJson.printJsonObj(response,map);
 
     }
 
